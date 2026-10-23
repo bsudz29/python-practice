@@ -1,0 +1,55 @@
+import random
+import sys
+
+words = [
+    "apple", 
+    "brick", 
+    "cloud", 
+    "water", 
+    "teams"
+]
+
+gamesWon = 0
+gamesPlayed = 0
+
+def start_game():
+    global gamesPlayed
+    global gamesWon
+    if gamesPlayed == 0:
+        answer = input("Do you want to play Wordle?\n")
+        if answer.lower() == "yes": 
+            gamesPlayed += 1
+            game()
+        else: sys.exit()
+    else:
+        answer = input(f"Do you want to play again? (Win Percentage: {gamesWon / gamesPlayed * 100}%)\n")
+        if answer.lower() == "yes":
+            gamesPlayed += 1
+            game()
+        else: sys.exit()
+def game():
+    global gamesWon 
+    guesses = 0
+    correctAnswer = random.choice(words)
+    while guesses < 6:
+        attempt = input("Guess a 5 Letter Word\n")
+        if attempt.lower() == correctAnswer:
+            print("🎉🎉 You got the correct answer! 🎉🎉")
+            gamesWon += 1
+            break
+        print(feedback(attempt, correctAnswer))
+        guesses += 1
+    start_game()
+
+def feedback(guess, correct):
+    result = ''
+    for i, c in enumerate(guess):
+        if c.lower() == correct[i]:
+            result += "🟩"
+        elif c.lower() in correct:
+            result += "🟨"
+        else:
+            result += "🟥"
+    return result
+
+start_game()
